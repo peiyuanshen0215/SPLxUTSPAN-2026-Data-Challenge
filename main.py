@@ -1,18 +1,3 @@
-# main.py
-# ------------------------------------------------------------
-# ExtraTrees tuning bundle (MULTI-RUN):
-# - Keeps your current best approach:
-#   * stable release idx (peak wrist 3D speed)
-#   * same feature engineering (stats + fingers + edges + angles)
-#   * separate models per target
-#   * per-participant models + global fallback
-# - Runs a small preset hyperparameter bundle and writes ONE submission per config.
-#
-# Usage:
-#   python main.py
-# Then upload the generated files: my_submission__CFG_*.csv
-# ------------------------------------------------------------
-
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import ExtraTreesRegressor
@@ -56,15 +41,13 @@ ANGLE_TRIPLETS = [
 ]
 
 # -----------------------------
-# 2) TUNING BUNDLE (EDIT THIS)
+# 2) TUNING BUNDLE 
 # -----------------------------
 # These configs are chosen to explore the "high impact" knobs:
 # - max_features: controls feature subsampling (very important in high-dim)
 # - max_depth: limits depth to reduce overfit
 # - min_samples_leaf: regularization
 # - bootstrap/max_samples: bagging style that often improves generalization
-#
-# Start by running all of these once. Then narrow down around the best.
 CFG_BUNDLE = [
     dict(name="CFG_f045_d14_leaf1", max_features=0.45, min_samples_leaf=1, max_depth=14, bootstrap=False, max_samples=None)
 ]
@@ -214,7 +197,7 @@ def scale_value(value, col_name):
     return float(np.clip(scaled, 0, 1))
 
 # -----------------------------
-# 5) FEATURE EXTRACTION (same as your best pipeline)
+# 5) FEATURE EXTRACTION 
 # -----------------------------
 def extract_features(df, feature_cols):
     features = []
@@ -395,7 +378,7 @@ def extract_features(df, feature_cols):
     return X
 
 # -----------------------------
-# 6) TRAIN / PREDICT (single config)
+# 6) TRAIN / PREDICT 
 # -----------------------------
 def make_et(cfg, seed):
     # note: max_samples only valid if bootstrap=True in sklearn
